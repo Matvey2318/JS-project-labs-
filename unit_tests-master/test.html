@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Refactored date examples</title>
+
+    <link rel="stylesheet" href="qunit.css" />
+    <script src="qunit.js"></script>
+    <script src="date.js"></script>
+
+    <script>
+    test("prettydate basics", function() {
+        var now = "2008/01/28 22:25:00";
+        equal(prettyDate.format(now, "2008/01/28 22:24:30"), "just now");
+    });
+    test("prettydate 1 min",function(){
+        var now = "2008/01/28 22:25:00";
+        equal(prettyDate.format(now,"2008/01/28 22:24:00"), "1 minute ago");
+    });
+    test("prettydate 6 hours",function(){
+        var now = "2008/01/28 22:25:00";
+        equal(prettyDate.format(now,"2008/01/28 16:24:00"), "6 hours ago");
+    });
+    test("prettydate Yesterday",function(){
+        var now = "2008/01/28 22:25:00";
+        equal(prettyDate.format(now,"2008/01/27 16:24:00"), "Yesterday");
+    });
+    test("prettydate 2 week ago",function(){
+        var now = "2008/01/28 22:25:00";
+        equal(prettyDate.format(now,"2008/01/14 16:24:00"), "2 weeks ago");
+    });
+    test("prettydate undefined",function(){
+        var now = "2008/01/28 22:25:00";
+        equal(prettyDate.format(now,"2008/01/30 16:24:00"), undefined);
+    });
+    </script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+        <ul>
+            <li class="entry" id="post57">
+                <p>blah blah blah…</p>
+                <small class="extra">
+                    Posted <span class="time"><a href="/2008/01/blah/57/" title="2008-01-28 20:25:00">January 28th, 2008</a></span>
+                </small>
+            </li>
+            <li class="entry" id="post57">
+                <p>blah blah blah…</p>
+                <small class="extra">
+                    Posted <span class="time"><a href="/2008/01/blah/57/" title="2008-01-27 22:24:17">January 27th, 2008</a></span>
+                </small>
+            </li>
+        </ul>
+    </div>
+    <script>
+        test("links",function(){
+            var now = "2008/01/28 22:25:00";
+            var links = document.getElementById('qunit-fixture').getElementsByTagName('a');
+            equal(links[0].innerHTML,'January 28th, 2008');
+            prettyDate.update(now,links);//act
+            equal(links[0].innerHTML, '2 hours ago')
+        });
+        test("links[1]",function(){
+            var now = "2008/01/28 22:25:00";
+            var links = document.getElementById('qunit-fixture').getElementsByTagName('a');
+            equal(links[1].innerHTML,'January 27th, 2008');
+            prettyDate.update(now,links);//act
+            equal(links[1].innerHTML, 'Yesterday')
+        });
+    </script>
+</body>
+</html>
